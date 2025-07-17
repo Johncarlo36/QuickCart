@@ -33,15 +33,13 @@ export const syncUserCreation = inngest.createFunction(
   }
 );
 
-
 export const syncUserUpdation = inggest.createFunction(
-
-    {
-        id: 'update-user-from-clerk'
-    },
-    { event: "clerk/user.updated" },
-    async ({event}) => {
-         const {
+  {
+    id: "update-user-from-clerk",
+  },
+  { event: "clerk/user.updated" },
+  async ({ event }) => {
+    const {
       id,
       first_name,
       last_name,
@@ -56,24 +54,24 @@ export const syncUserUpdation = inggest.createFunction(
       imageUrl: image_url, // fixed variable name
     };
     await connectDB();
-    await User.findByIdAndUpdate(id, userData )
-}
-)
+    await User.findByIdAndUpdate(id, userData);
+  }
+);
 
 //Inggest Functionn to delete user data from a database
 
-export cosnt syncUserDeletion = inngest.createFunction(
-    {   
-        id: 'delete-user-from-clerk'
-    },
-    { event: "clerk/user.deleted" },
-    async ({event}) => {
-        const { id } = event.data;
+export const syncUserDeletion = inngest.createFunction(
+  {
+    id: "delete-user-from-clerk",
+  },
+  { event: "clerk/user.deleted" },
+  async ({ event }) => {
+    const { id } = event.data;
 
-        // Connect to your MongoDB database
-        await connectDB();
+    // Connect to your MongoDB database
+    await connectDB();
 
-        // Delete the user from MongoDB via Mongoose
-        await User.findByIdAndDelete(id);
-    }
+    // Delete the user from MongoDB via Mongoose
+    await User.findByIdAndDelete(id);
+  }
 );
